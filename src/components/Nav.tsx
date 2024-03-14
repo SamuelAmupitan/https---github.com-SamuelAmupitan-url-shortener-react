@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa6';
 import { links } from '../composables/data';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'; // Import Firebase Authentication functions
 
 interface NavProps {
@@ -11,7 +11,6 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ scrollToView, onSidebarOpen, sidebarOpen }) => {
-  const nav = useRef<HTMLDivElement>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const Nav: React.FC<NavProps> = ({ scrollToView, onSidebarOpen, sidebarOpen }) =
   };
 
   return (
-    <nav ref={nav} className='home' id='home'>
+    <nav className='home' id='home'>
       <div className='nav-center'>
         <div className='logo'>
           <img className='logo-icon' src='./images/Logo.svg' alt='nav-logo' />
@@ -51,10 +50,11 @@ const Nav: React.FC<NavProps> = ({ scrollToView, onSidebarOpen, sidebarOpen }) =
 
         <ul className='nav-links'>
           {links.map((link, id) => (
-            <li key={id} onClick={(e) => scrollToView(e, link.href)}>
+            <li key={id}>
               <a
                 className={`nav-link ${id === 0 ? 'primary-blue-300' : ''} `}
                 href={`#${link.href}`}
+                onClick={(e) => scrollToView(e, link.href)} // Move onClick event to the <a> element
               >
                 {link.text}
               </a>

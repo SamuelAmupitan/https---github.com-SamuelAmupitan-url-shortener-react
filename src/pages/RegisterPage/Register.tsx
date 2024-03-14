@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PasswordInput from "../../components/PasswordInput";
-import { auth, googleProvider } from "../../config/firebase.js";
+import { auth, googleProvider } from "../../config/firebase";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 import Line from "/images/Vector 8.svg";
@@ -112,6 +112,7 @@ const RegisterPage: React.FC = () => {
   return (
     <section>
       <div className="register-container">
+        {isLoading && <Spinner />}
         <form className="form-div" onSubmit={(e) => e.preventDefault()}>
           <p className="signup">Sign up with</p>
           <div className="buttons-container">

@@ -1,4 +1,3 @@
-import React from 'react';
 import { plans } from '../composables/data';
 
 export const Pricing = () => {

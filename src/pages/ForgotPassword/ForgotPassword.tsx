@@ -20,7 +20,6 @@ const ForgotPassword: React.FC = () => {
 
     try {
       await sendPasswordResetEmail(auth, email);
-      alert("Password reset email sent successfully. Please check your email");
       setMessage("Password reset email sent successfully. Please check your email");
       navigate("/login");
     } catch (err) {
@@ -46,15 +45,20 @@ const ForgotPassword: React.FC = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {message && <p>{message}</p>}
-        {error && <p>{error}</p>}
-        {isLoading && <Spinner />}
-        <button
-          type="submit"
-          className="mt-[2em] border-2 border-primaryBlue  p-1 rounded-md font-medium btn-blue px-6 py-3"
-        >
-          Reset Password
-        </button>
+        {isLoading ? (
+          <Spinner isLoading={isLoading}/>
+        ) : (
+          <>
+            {message && <p>{message}</p>}
+            {error && <p>{error}</p>}
+            <button
+              type="submit"
+              className="mt-[2em] border-2 border-primaryBlue  p-1 rounded-md font-medium btn-blue px-6 py-3"
+            >
+              Reset Password
+            </button>
+          </>
+        )}
       </form>
       <Footer />
     </section>

@@ -1,27 +1,28 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Header } from '../../components/Header';
+import Nav from '../../components/Nav';
 import Features from '../../components/Features';
 import Footer from '../../components/Footer';
 import Form from '../../components/Form';
-import { Header } from '../../components/Header';
-import Nav from '../../components/Nav';
-import Optimize from '../../components/Optimize';
+import Views from '../../components/Views';
 import { Pricing } from '../../components/Pricing';
 import Questions from '../../components/Questions';
-import Sidebar from '../../components/Sidebar';
-import Views from '../../components/Views';
+import Optimize from '../../components/Optimize';
 import ShortLink from "../../components/ShortenedLink";
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import Spinner from '../../components/Spinner';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import Sidebar from '../../components/Sidebar';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { User } from 'firebase/auth'; 
 
-function App() {
-  const nav = useRef(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [shortUrl, setShortUrl] = useState("");
-  const [qrCode, setQrCode] = useState("");
+function LandingPage() {
+  const nav = useRef<HTMLDivElement>(null);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [shortUrl, setShortUrl] = useState<string>("");
+  const [qrCode, setQrCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -39,13 +40,13 @@ function App() {
     setSidebarOpen(false);
   };
 
-  const scrollToView = (e, id) => {
+  const scrollToView = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     if (!id) return;
-    const element = document.querySelector(`#${id}`);
-    const navHeight = nav.current.getBoundingClientRect().height;
-    const fixedNav = nav.current.classList.contains('sticky');
-    let position = element.offsetTop - navHeight;
+    const element = document.querySelector(`#${id}`) as HTMLElement; 
+    const navHeight = nav.current?.getBoundingClientRect().height || 0;
+    const fixedNav = nav.current?.classList.contains('sticky') || false;
+    let position = element?.offsetTop - navHeight;
     if (!fixedNav) {
       position -= navHeight;
     }
@@ -99,14 +100,14 @@ function App() {
     setIsConfirmationOpen(false);
   };
 
-  const logout = async () => {
-    try {
-      const auth = getAuth();
-      await signOut(auth);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
+  // const handleLogout = async () => {
+  //   try {
+  //     const auth = getAuth();
+  //     await signOut(auth);
+  //   } catch (error) {
+  //     console.error('Error signing out:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -132,7 +133,7 @@ function App() {
 
       <Questions />
       <Optimize />
-      <Footer />
+      <Footer  />
       <Sidebar
         sidebarOpen={sidebarOpen}
         onSidebarClose={handleCloseSidebar}
@@ -147,4 +148,4 @@ function App() {
   );
 }
 
-export default App;
+export default LandingPage;

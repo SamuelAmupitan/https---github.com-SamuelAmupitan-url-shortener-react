@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import ToggleSwitch from "../components/ToogleSwitch";
-import QRCode from "qrcode.react";
-import Qrcode from "./QRcode";
-import { FaTimes } from 'react-icons/fa'; // Import the X icon component
+import { FaTimes } from 'react-icons/fa';
 import ConfirmationDialog from '../components/ConfirmationDialog';
+import QRCode from "qrcode.react"; // Import QRCode from qrcode.react
 
 const ShortLink: React.FC<{
   url: string;
   qrCode: string;
-  onDelete: () => void; // Function to handle deletion
+  onDelete: () => void;
 }> = ({ url, onDelete }) => {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,11 +19,11 @@ const ShortLink: React.FC<{
         setCopied(true);
         setTimeout(() => {
           setCopied(false);
-        }, 2000); // Hide "Copied!" message after 2 seconds
+        }, 2000);
       })
       .catch(error => {
         console.error("Error copying to clipboard:", error);
-        setError("Failed to copy URL to clipboard. Please try again."); // Set error message
+        setError("Failed to copy URL to clipboard. Please try again.");
       });
   };
 
@@ -39,7 +38,7 @@ const ShortLink: React.FC<{
   };
 
   const handleConfirmRemove = () => {
-    onDelete(); // Call the onDelete function passed from the parent component
+    onDelete();
     setIsConfirmationOpen(false); 
   };
 
@@ -50,7 +49,6 @@ const ShortLink: React.FC<{
   return (
     <div className="relative z-0">
       <div className="absolute top-0 right-0 mt-2 mr-2 z-10">
-        {/* Attach the handleRemoveShortUrl function to the onClick event */}
         <FaTimes onClick={handleRemoveShortUrl} style={{ cursor: 'pointer', fontSize: '1.5rem', color: '#fff' }} />
       </div>
       <div className="flex flex-col items-center justify-center gap-6 form py-5 qr">
@@ -59,20 +57,19 @@ const ShortLink: React.FC<{
           <div className="flex items-center">
             <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline break-all">{url}</a>
             {copied && <span className="text-green-500 ml-2">Copied!</span>}
-            {error && <span className="text-red-500 ml-2">{error}</span>} {/* Display error message */}
+            {error && <span className="text-red-500 ml-2">{error}</span>}
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <ToggleSwitch onChange={handleToggle} />
+          <ToggleSwitch onChange={handleToggle} url={url} /> {/* Pass url prop to ToggleSwitch */}
           <p className="text-sm text-white">Copy to Clipboard</p>
         </div>
         <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:items-center">
           <div className="qr-code-container align-middle">
-            <Qrcode value={url} />
+            <QRCode value={url} /> {/* Provide value as a child of QRCode */}
           </div>
         </div>
       </div>
-      {/* Render the ConfirmationDialog component */}
       <ConfirmationDialog
         isOpen={isConfirmationOpen}
         onClose={handleCancelRemove}

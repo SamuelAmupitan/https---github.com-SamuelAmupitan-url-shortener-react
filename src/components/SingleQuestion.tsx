@@ -1,7 +1,13 @@
-import { FaPlus } from 'react-icons/fa6';
-import { FaMinus } from 'react-icons/fa6';
+import { FaPlus, FaMinus } from 'react-icons/fa6';
 
-function SingleQuestion({ question, id, activeId, handleActiveId }) {
+interface SingleQuestionProps {
+  question: { question: string; answer: string }; // Define the type for the question prop
+  id: number; // Define the type for the id prop
+  activeId: number | null; // Define the type for the activeId prop
+  handleActiveId: (id: number) => void; // Define the type for the handleActiveId prop
+}
+
+function SingleQuestion({ question, id, activeId, handleActiveId }: SingleQuestionProps) {
   const isActive = activeId === id;
   return (
     <article className='question' onClick={() => handleActiveId(id)}>

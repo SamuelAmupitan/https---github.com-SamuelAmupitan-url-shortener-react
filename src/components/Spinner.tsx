@@ -5,19 +5,13 @@ interface SpinnerProps {
 }
 
 const Spinner: React.FC<SpinnerProps> = ({ isLoading }) => {
-  if (!isLoading) return null;
+  if (!isLoading) return <div></div>;
 
- return (
-  <>
-    {/* Your other components */}
-    {isLoading && (
-      <div className="loader-container">
-        <div className="loader"></div>
-      </div>
-    )}
-  </>
-);
-
+  return (
+    <div className="loader-container">
+      <div className="loader"></div>
+    </div>
+  );
 };
 
 export default Spinner;

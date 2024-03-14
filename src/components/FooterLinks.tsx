@@ -1,4 +1,9 @@
-const FooterLinks = ({ title, footerArray }) => {
+interface FooterLinksProps {
+  title: string;
+  footerArray: string[];
+}
+
+const FooterLinks: React.FC<FooterLinksProps> = ({ title, footerArray }) => {
   return (
     <div
       className={`logo-links ${

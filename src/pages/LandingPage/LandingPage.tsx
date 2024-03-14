@@ -13,7 +13,7 @@ import ConfirmationDialog from '../../components/ConfirmationDialog';
 import Spinner from '../../components/Spinner';
 import Sidebar from '../../components/Sidebar';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { User } from 'firebase/auth'; 
+// import { User } from 'firebase/auth'; 
 
 function LandingPage() {
   const nav = useRef<HTMLDivElement>(null);
@@ -22,12 +22,10 @@ function LandingPage() {
   const [qrCode, setQrCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, () => {
     });
     return () => unsubscribe();
   }, []);
@@ -100,20 +98,12 @@ function LandingPage() {
     setIsConfirmationOpen(false);
   };
 
-  // const handleLogout = async () => {
-  //   try {
-  //     const auth = getAuth();
-  //     await signOut(auth);
-  //   } catch (error) {
-  //     console.error('Error signing out:', error);
-  //   }
-  // };
 
   return (
     <>
       <Nav
         scrollToView={scrollToView}
-        nav={nav}
+        // nav={nav} 
         onSidebarOpen={handleOpenSidebar}
         sidebarOpen={sidebarOpen}
       />

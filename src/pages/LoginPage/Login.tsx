@@ -37,13 +37,14 @@ const LoginPage: React.FC = () => {
       setLogin('Login Successful!');
       await new Promise((resolve) => setTimeout(resolve, 5000));
       navigate('/');
-    } catch (err: Error) {
+    } catch (err) {
       console.error(err);
       // setErrorMessage(err.code);
     } finally {
       setIsLoading(false);
     }
   };
+
 
   const logInGoogle = async () => {
     setIsLoading(true);

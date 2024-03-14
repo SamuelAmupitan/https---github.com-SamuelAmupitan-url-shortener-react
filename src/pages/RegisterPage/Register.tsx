@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import PasswordInput from "../../components/PasswordInput";
 import { auth, googleProvider } from "../../config/firebase";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth"; 
 
 import Line from "/images/Vector 8.svg";
 import GoogleIcon from "/images/logo_googleg_48dp.png";
@@ -18,14 +18,19 @@ const RegisterPage: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [passError, setPassError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [passwordConfirmError, setPasswordConfirmError] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [verification, setVerification] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false); 
+
+  // Redirect to home page if user is already logged in
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate("/", { replace: true });
+      }
+    });
+  }, [navigate]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -42,18 +47,18 @@ const RegisterPage: React.FC = () => {
       const user = userCredential.user;
       await new Promise((resolve) => setTimeout(resolve, 10000));
       if (user) {
-        setVerification("Account Created Successfully!");
         await new Promise((resolve) => setTimeout(resolve, 5000));
+        // setVerification("Account Created Successfully!");
         navigate("/login");
       }
-    } catch (err: any) {
+    } catch (err: any) { 
       if (
         err.code === "auth/email-already-in-use" ||
         err.code === "auth/invalid-email"
       ) {
         setEmailError("Email is already in use");
       } else {
-        setPassError(err.message);
+        setPasswordError(err.message); 
       }
     } finally {
       setIsLoading(false);
@@ -61,11 +66,14 @@ const RegisterPage: React.FC = () => {
   };
 
   const logInGoogle = async () => {
+    setIsLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
       navigate("/");
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -100,19 +108,10 @@ const RegisterPage: React.FC = () => {
     setPassword(newPassword);
   };
 
-  const handlePasswordConfirmation = (newPassword: string) => {
-    if (newPassword === password) {
-      setPasswordConfirmError("Password Matches ✔");
-    } else {
-      setPasswordConfirmError("Password does not match ❌");
-    }
-    setPasswordConfirm(newPassword);
-  };
-
   return (
     <section>
       <div className="register-container">
-        {isLoading && <Spinner />}
+        {isLoading && <Spinner isLoading={isLoading} />} 
         <form className="form-div" onSubmit={(e) => e.preventDefault()}>
           <p className="signup">Sign up with</p>
           <div className="buttons-container">
@@ -175,22 +174,6 @@ const RegisterPage: React.FC = () => {
               />
               {passwordError && <p className="error">{passwordError}</p>}
             </div>
-
-            <div>
-              <PasswordInput
-                onChange={handlePasswordConfirmation}
-                placeholder="Confirm password"
-              />
-              {passwordConfirmError && (
-                <p className="error">{passwordConfirmError}</p>
-              )}
-            </div>
-
-            {verification && (
-              <p className="text-green-500 text-base mt-1 font-medium">
-                {verification}
-              </p>
-            )}
 
             <button
               onClick={registerAuthentication}

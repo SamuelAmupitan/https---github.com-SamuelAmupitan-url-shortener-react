@@ -46,7 +46,7 @@ function Sidebar({ sidebarOpen, onSidebarClose, scrollToView }: SidebarProps) {
         <ul className='sidebar-links'>
           {links.map((link, id) => (
             <li key={id}>
-              <a className={`sidebar-link `} href={`#${link.href}`} onClick={(e) => clickSidebarLink(e, link.href)}>
+              <a className={`sidebar-link`} href={`#${link.href}`} onClick={(e) => clickSidebarLink(e, link.href)}>
                 {link.text}
               </a>
             </li>

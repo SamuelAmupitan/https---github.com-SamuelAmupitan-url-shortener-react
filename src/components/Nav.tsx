@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa6';
 import { links } from '../composables/data';
 import { Link } from 'react-router-dom';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'; // Import Firebase Authentication functions
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'; 
 
 interface NavProps {
   scrollToView: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
@@ -54,7 +54,7 @@ const Nav: React.FC<NavProps> = ({ scrollToView, onSidebarOpen, sidebarOpen }) =
               <a
                 className={`nav-link ${id === 0 ? 'primary-blue-300' : ''} `}
                 href={`#${link.href}`}
-                onClick={(e) => scrollToView(e, link.href)} // Move onClick event to the <a> element
+                onClick={(e) => scrollToView(e, link.href)} 
               >
                 {link.text}
               </a>
@@ -62,7 +62,7 @@ const Nav: React.FC<NavProps> = ({ scrollToView, onSidebarOpen, sidebarOpen }) =
           ))}
         </ul>
 
-        {isLoggedIn ? (
+        {sidebarOpen && isLoggedIn && (
           <ul className='signin-links'>
             <li>
               <button onClick={logout} className='signin-link-bg btn-blue btn'>
@@ -70,7 +70,9 @@ const Nav: React.FC<NavProps> = ({ scrollToView, onSidebarOpen, sidebarOpen }) =
               </button>
             </li>
           </ul>
-        ) : (
+        )}
+
+        {!isLoggedIn && !sidebarOpen && (
           <ul className='signin-links'>
             <li>
               <Link to="/login" className='signin-link primary-blue-300'>

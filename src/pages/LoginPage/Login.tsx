@@ -39,7 +39,7 @@ const LoginPage: React.FC = () => {
       setLogin('Login Successful!');
       await new Promise((resolve) => setTimeout(resolve, 5000));
       navigate('/');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       if (err.code === 'auth/user-not-found') {
         setError('User not found. Please check your email and try again.');

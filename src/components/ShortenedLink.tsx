@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import ToggleSwitch from "../components/ToogleSwitch";
 import { FaTimes } from 'react-icons/fa';
 import ConfirmationDialog from '../components/ConfirmationDialog';
-import QRCode from "qrcode.react"; // Import QRCode from qrcode.react
+// import QRCode from "qrcode.react"; 
+import QRcode from '../components/QRcode'
 
 const ShortLink: React.FC<{
   url: string;
@@ -66,7 +67,7 @@ const ShortLink: React.FC<{
         </div>
         <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:items-center">
           <div className="qr-code-container align-middle">
-            <QRCode value={url} /> {/* Provide value as a child of QRCode */}
+            <QRcode qrUrl={url} /> 
           </div>
         </div>
       </div>

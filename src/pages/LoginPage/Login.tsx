@@ -14,12 +14,14 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [login, setLogin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // setUser(user);
+        navigate('/');
       } else {
         // setUser(null);
       }
@@ -28,7 +30,7 @@ const LoginPage: React.FC = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   const logIn = async () => {
     setIsLoading(true);
@@ -37,9 +39,9 @@ const LoginPage: React.FC = () => {
       setLogin('Login Successful!');
       await new Promise((resolve) => setTimeout(resolve, 5000));
       navigate('/');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      // setErrorMessage(err.code);
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -51,8 +53,10 @@ const LoginPage: React.FC = () => {
     try {
       await signInWithPopup(auth, googleProvider);
       navigate('/');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -109,6 +113,11 @@ const LoginPage: React.FC = () => {
             <div className="mb">
               <PasswordInput onChange={passwordCheck} placeholder="Password" />
             </div>
+            {error && (
+              <p className="error">
+                {error}
+              </p>
+            )}
             <div className="forgot">
               <Link to="/forgotpassword" className="forgot">
                 Forgot your password?

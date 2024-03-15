@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import LoginPage from "./pages/LoginPage/Login";
 import RegisterPage from "./pages/RegisterPage/Register";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import NotFound from './pages/NotFound/NotFound'
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     {
     path: "/forgotpassword",
     element: <ForgotPassword />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

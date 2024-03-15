@@ -18,9 +18,11 @@ const RegisterPage: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false); 
 
   // Redirect to home page if user is already logged in
@@ -39,6 +41,11 @@ const RegisterPage: React.FC = () => {
   const registerAuthentication = async () => {
     setIsLoading(true);
     try {
+      if (password !== confirmPassword) {
+        setConfirmPasswordError("Passwords do not match");
+        return;
+      }
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -108,6 +115,15 @@ const RegisterPage: React.FC = () => {
     setPassword(newPassword);
   };
 
+  const handleConfirmPasswordValidation = (newConfirmPassword: string) => {
+    if (newConfirmPassword === password) {
+      setConfirmPasswordError("");
+    } else {
+      setConfirmPasswordError("Passwords do not match");
+    }
+    setConfirmPassword(newConfirmPassword);
+  };
+
   return (
     <section>
       <div className="register-container">
@@ -173,6 +189,14 @@ const RegisterPage: React.FC = () => {
                 placeholder="Password"
               />
               {passwordError && <p className="error">{passwordError}</p>}
+            </div>
+
+            <div>
+              <PasswordInput
+                onChange={handleConfirmPasswordValidation}
+                placeholder="Confirm Password"
+              />
+              {confirmPasswordError && <p className="error">{confirmPasswordError}</p>}
             </div>
 
             <button

@@ -39,9 +39,15 @@ const LoginPage: React.FC = () => {
       setLogin('Login Successful!');
       await new Promise((resolve) => setTimeout(resolve, 5000));
       navigate('/');
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(err.message);
+      if (err.code === 'auth/user-not-found') {
+        setError('User not found. Please check your email and try again.');
+      } else if (err.code === 'auth/wrong-password') {
+        setError('Incorrect password. Please try again.');
+      } else {
+        setError('An error occurred. Please try again later.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -53,10 +59,9 @@ const LoginPage: React.FC = () => {
     try {
       await signInWithPopup(auth, googleProvider);
       navigate('/');
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      
-      setError(err.message);
+      setError('An error occurred. Please try again later.');
     } finally {
       setIsLoading(false);
     }

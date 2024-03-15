@@ -31,7 +31,7 @@ const QrCode: React.FC<QRCodeComponentProps> = ({ qrUrl }) => {
 
       <button
         onClick={downloadQRCode}
-        className="bg-blue p-1 px-2 rounded-md font-semibold py-4 "
+        className="bg-blue p-1 px-2 rounded-md font-semibold py-4 btn btn-blue"
       >
         Download QR Code
       </button>
